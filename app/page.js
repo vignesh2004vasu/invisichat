@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Adjusted import for client-side navigation in app directory
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter(); // Adjusted to use client-side navigation
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push('/chat'); // Use client-side navigation
+      router.push('/chat'); // Redirect to chat page upon successful login
     } else {
       alert('Invalid credentials');
     }
@@ -27,8 +27,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
-        <h2 className="mb-4 text-xl font-bold">Login</h2>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-xs">
+        <h2 className="mb-4 text-xl font-bold text-center">Login</h2>
         <input
           type="text"
           value={username}
@@ -41,7 +41,7 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
-          className="mb-2 p-2 border border-gray-300 rounded w-full"
+          className="mb-4 p-2 border border-gray-300 rounded w-full"
         />
         <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Login</button>
       </form>

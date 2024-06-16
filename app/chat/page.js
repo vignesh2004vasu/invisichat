@@ -1,11 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [authenticated, setAuthenticated] = useState(false); // State to track authentication status
   const username = `User${Math.floor(Math.random() * 1000)}`;
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchMessages() {
@@ -15,7 +18,24 @@ export default function ChatPage() {
     }
 
     fetchMessages();
+
+    // Check authentication status on component mount
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = async () => {
+    try {
+      const res = await fetch('/api/check-authentication');
+      if (res.ok) {
+        setAuthenticated(true);
+      } else {
+        router.push('/'); // Redirect to login if not authenticated
+      }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      router.push('/'); // Redirect to login on error
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +53,10 @@ export default function ChatPage() {
       setNewMessage('');
     }
   };
+
+  if (!authenticated) {
+    return null; // Optionally, you can render a loading spinner or message here
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
